@@ -17,7 +17,7 @@ var clean = require('gulp-clean'),
 gulp.task('default', ['build:js', 'build:html', 'build:css']);
 
 gulp.task('watch', ['build:js', 'build:html', 'build:css'], function() {
-    gulp.watch(src + '**/*.html', ['build:html']);
+    gulp.watch(src + '/**/*.html', ['build:html']);
     gulp.watch(src + '/js/**/*.js', ['build:js']);
     gulp.watch(src + '/sass/**/*.sass', ['build:css']);
     process.on('SIGINT', function() {
