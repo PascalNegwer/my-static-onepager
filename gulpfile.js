@@ -12,7 +12,7 @@ var clean = require('gulp-clean'),
     uglify = require('gulp-uglify'),
 
     src = './src',
-    dest = './docs';
+    dest = '.';
 
 gulp.task('default', ['build:js', 'build:html', 'build:css']);
 
@@ -28,12 +28,27 @@ gulp.task('watch', ['build:js', 'build:html', 'build:css'], function() {
     });
 });
 
-gulp.task('clean', function () {
-    gulp.src(dest, {read: false})
+gulp.task('clean:html', function () {
+    return gulp.src(dest + '/index.html', {read: false})
         .pipe(clean());
 });
 
-gulp.task('build:html', function() {
+gulp.task('clean:css', function () {
+    return gulp.src(dest + '/css', {read: false})
+        .pipe(clean());
+});
+
+gulp.task('clean:js', function () {
+    return gulp.src(dest + '/js', {read: false})
+        .pipe(clean());
+});
+
+gulp.task('clean:assets', function () {
+    return gulp.src(dest + '/assets', {read: false})
+        .pipe(clean());
+});
+
+gulp.task('build:html', ['clean:html'], function() {
     var options = {
         "preserve_newlines": true,
         "max_preserve_newlines": 0,
@@ -45,7 +60,7 @@ gulp.task('build:html', function() {
         .pipe(gulp.dest(dest));
 });
 
-gulp.task('build:img', function () {
+gulp.task('build:assets', ['clean:assets'], function () {
     gulp.src(src + '/assets/images/*')
         .pipe(imageMin())
         .dest(dest + '/assets/images');
@@ -54,7 +69,7 @@ gulp.task('build:img', function () {
         .dest(dest + '/assets/logos');
 });
 
-gulp.task('build:js', function() {
+gulp.task('build:js', ['clean:js'], function() {
     return gulp.src(src + '/js/**/*.js')
         .pipe(concat('index.js'))
         .pipe(gulp.dest(dest + '/js'))
@@ -65,7 +80,7 @@ gulp.task('build:js', function() {
         .pipe(gulp.dest(dest + '/js'));
 });
 
-gulp.task('build:css', function () {
+gulp.task('build:css', ['clean:css'], function () {
     return gulp.src(src + '/sass/index.sass')
         .pipe(sass())
         .pipe(cleanCss())
